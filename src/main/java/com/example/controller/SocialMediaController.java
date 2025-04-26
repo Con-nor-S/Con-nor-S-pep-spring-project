@@ -130,4 +130,14 @@ public class SocialMediaController {
         return rowsAffected == 0 ? new ResponseEntity<>(HttpStatus.BAD_REQUEST) :
             new ResponseEntity<>(rowsAffected, HttpStatus.OK);
     }
+
+    /**
+     * Endpoint handler for get account messages
+     * @param accountId ID of account to get messages for
+     * @return OK and list of all messages posted by account
+     */
+    @GetMapping("/accounts/{accountId}/messages")
+    public ResponseEntity<List<Message>> getAccountMessages(@PathVariable Integer accountId){
+        return new ResponseEntity<>(accountService.getAllMessages(accountId), HttpStatus.OK);
+    }
 }

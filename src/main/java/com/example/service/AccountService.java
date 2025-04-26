@@ -1,18 +1,23 @@
 package com.example.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Account;
+import com.example.entity.Message;
 import com.example.repository.AccountRepository;
+import com.example.repository.MessageRepository;
 
 @Service
 public class AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private MessageRepository messageRepository;
 
     /**
      * Persists an account
@@ -42,5 +47,14 @@ public class AccountService {
         if(existingAccount.isPresent())
             return existingAccount.get();
         return null;
+    }
+
+    /**
+     * Gets all messages posted by given ID
+     * @param id ID of account to find messages posted by
+     * @return List of all messages posted by given ID
+     */
+    public List<Message> getAllMessages(Integer id){
+        return messageRepository.findByPostedBy(id);
     }
 }
