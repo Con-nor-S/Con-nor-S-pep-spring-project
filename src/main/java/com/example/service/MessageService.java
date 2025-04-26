@@ -67,4 +67,22 @@ public class MessageService {
         }
         return 0;
     }
+
+    /**
+     * Updates message of given ID to given message
+     * @param id ID of message to update
+     * @param msg Message obj holding new message
+     * @return rows affected
+     */
+    public int updateMessageById(Integer id, Message msg){
+        // Check validity of update
+        Optional<Message> oldMessage = messageRepository.findById(id);
+        if(!oldMessage.isPresent() || msg.getMessageText().isEmpty() 
+            || msg.getMessageText().length() > 255)
+            return 0;
+        // Make update
+        msg.setMessageId(id);
+        messageRepository.save(msg);
+        return 1;
+    }
 }

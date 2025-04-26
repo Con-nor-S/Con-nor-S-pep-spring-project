@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -111,6 +112,22 @@ public class SocialMediaController {
     public ResponseEntity<Integer> deleteMessageById(@PathVariable Integer messageId){
         int rowsAffected = messageService.deleteMessage(messageId);
         return rowsAffected == 0 ? new ResponseEntity<>(HttpStatus.OK) : 
+            new ResponseEntity<>(rowsAffected, HttpStatus.OK);
+    }
+
+    /**
+     * Endpoint handler for update message by ID
+     * @param messageId ID of message to update
+     * @param msg Message containing new message text
+     * @return OK and rows affected if successful, else BAD_REQUEST
+     */
+    @PatchMapping("/messages/{messageId}")
+    public ResponseEntity<Integer> updateMessageById(@PathVariable Integer messageId,
+     @RequestBody Message msg){
+        // Attempt update
+        int rowsAffected = messageService.updateMessageById(messageId, msg);
+        // create response
+        return rowsAffected == 0 ? new ResponseEntity<>(HttpStatus.BAD_REQUEST) :
             new ResponseEntity<>(rowsAffected, HttpStatus.OK);
     }
 }
