@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.entity.Account;
+import com.example.entity.Message;
 import com.example.service.AccountService;
 import com.example.service.MessageService;
 
@@ -24,12 +25,12 @@ public class SocialMediaController {
 
     // Service objects
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
     @Autowired
-    MessageService messageService;
+    private MessageService messageService;
 
     /**
-     * Attempts to register new account
+     * endpoint handler to register new account
      * @param acc account to be registered
      * @return BAD_REQUEST if account invalid, CONFLICT if account exists, OK and new account if created
      */
@@ -45,12 +46,34 @@ public class SocialMediaController {
             new ResponseEntity<>(addedAccount, HttpStatus.OK);
     }
 
+    /**
+     * Endpoint handler to login an account
+     * @param acc account to log in
+     * @return UNAUTHORIZED if incorrect credentials, OK and account if successful
+     */
     @PostMapping("/login")
     public ResponseEntity<Account> loginAccount(@RequestBody Account acc){
+        // Check for account
         Account loggedInAccount = accountService.findAccount(acc);
+        // Create response
         return loggedInAccount == null ? new ResponseEntity<>(HttpStatus.UNAUTHORIZED) :
             new ResponseEntity<>(loggedInAccount, HttpStatus.OK);
     }
 
+    /**
+     * Endpoint handler for create message
+     * @param msg message to create
+     * @return OK and message on success, else BAD_REQUEST
+     */
+    @PostMapping("/messages")
+    public ResponseEntity<Message> createMessage(@RequestBody Message msg){
+        // Attempt create
+        Message createdMessage = messageService.createMessage(msg);
+        // Create response
+        return createdMessage == null ? new ResponseEntity<>(HttpStatus.BAD_REQUEST) :
+            new ResponseEntity<>(createdMessage, HttpStatus.OK);
+    }
+
+    
 
 }
