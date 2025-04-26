@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -86,4 +87,17 @@ public class SocialMediaController {
         return new ResponseEntity<>(messageService.getAllMessages(), HttpStatus.OK);
     }
 
+    /**
+     * Endpoint handler to get message by ID
+     * @param messageId ID of desired message
+     * @return OK and message if present, else OK and empty body
+     */
+    @GetMapping("/messages/{messageId}")
+    public ResponseEntity<Message> getMessageById(@PathVariable Integer messageId){
+        // Check for message
+        Message msg = messageService.findMessageById(messageId);
+        // Create response
+        return msg == null ? new ResponseEntity<>(HttpStatus.OK) : 
+            new ResponseEntity<>(msg, HttpStatus.OK); 
+    }
 }

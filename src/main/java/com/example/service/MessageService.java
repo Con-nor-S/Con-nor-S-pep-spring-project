@@ -41,4 +41,14 @@ public class MessageService {
     public List<Message> getAllMessages(){
         return messageRepository.findAll();
     }
+
+    /**
+     * finds message of given ID
+     * @param id ID of desired message
+     * @return Message if exists, else null
+     */
+    public Message findMessageById(Integer id){
+        Optional<Message> msg = messageRepository.findById(id);
+        return msg.isPresent() ? msg.get() : null;
+    }
 }
