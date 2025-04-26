@@ -1,5 +1,6 @@
 package com.example.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,13 @@ public class MessageService {
             return null;
         // Create message
         return messageRepository.save(msg);
+    }
+
+    /**
+     * Returns all persisted messages
+     * @return List of all messages
+     */
+    public List<Message> getAllMessages(){
+        return messageRepository.findAll();
     }
 }
