@@ -51,4 +51,20 @@ public class MessageService {
         Optional<Message> msg = messageRepository.findById(id);
         return msg.isPresent() ? msg.get() : null;
     }
+
+    /**
+     * Deletes message of given ID
+     * @param id ID of message to delete
+     * @return rows affected
+     */
+    public int deleteMessage(Integer id){
+        // Check if message exists so we can return rows affected
+        Optional<Message> msg = messageRepository.findById(id);
+        // delete and return
+        if(msg.isPresent()){
+            messageRepository.deleteById(id);
+            return 1;            
+        }
+        return 0;
+    }
 }
